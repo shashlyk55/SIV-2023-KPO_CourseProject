@@ -1,0 +1,19 @@
+-------------- Протокол ----------------
+Дата: 19.12.2023 19:02:49
+------------- Параметры ----------------
+-in: D:\KPO_3sem\SIV-2023\SIV-2023\ControlExample.txt
+-log: D:\KPO_3sem\SIV-2023\SIV-2023\ControlExample.txt.log
+-out: D:\KPO_3sem\SIV-2023\SIV-2023\SIV_result.asm
+-an: D:\KPO_3sem\SIV-2023\SIV-2023\ControlExample.txt.an.txt
+---------- Исходные данные -------------
+Количество символов: 688
+Проигнорировано:     0
+Количество строк:    55
+----------------------------------------
+No forbidden characters
+Tokenization :  Completed successfully
+Lexical analysis :  Completed successfully
+Syntax analysis :  Completed successfully
+Semantic analysis :  Completed successfully
+Polish notation  :  Completed successfully
+Code generation :  Completed successfully

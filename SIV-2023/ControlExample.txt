@@ -1,0 +1,54 @@
+int function func(int a, int b){	
+	new int res = -1;
+	if(a<0)
+	{
+		res = abs(a);
+	}
+	else
+	{
+		res = pow(a, b);
+	}
+	return res;
+};
+
+str function setstring(str s){
+	return s;
+};
+
+main
+{					// There are comments here
+	new str str1 = setstring("Hello there!");	
+	print str1;
+
+	print "Арифм. операции:";
+	new int i = 2-2;
+	new int asd = 5/i;
+	print i;
+	print "Контрольный пример выражения: ";
+	i = 5*(pow(1011B,2)-B2H)+23O;		// 5*(pow(11,2)-178)+19 = -266
+	print i;
+	i = FFH + 23O;
+	print "FFH + 23O = ";
+	print i;
+
+	print "Вызов функции:";
+	new int num = func(-4, 3);
+	print num;
+
+	print "Условный оператор:";
+	new int c;
+	if(i >= 0)
+	{
+		print "positive";	
+		c = 1;
+	}
+	else
+	{
+		print "negative";
+		c = -1;
+	}
+	print c;
+
+	new bool flag;
+	
+};

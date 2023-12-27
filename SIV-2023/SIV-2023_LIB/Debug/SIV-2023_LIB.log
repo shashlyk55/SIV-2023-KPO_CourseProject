@@ -1,0 +1,28 @@
+﻿Сборка начата 16.12.2023 23:31:44.
+Уровень детализации журнала: Normal.     1>Проект "D:\KPO_3sem\SIV-2023\SIV-2023\SIV-2023_LIB\SIV-2023_LIB.vcxproj" в узле 2 (целевые объекты Build).
+     1>PrepareForBuild:
+         Создание каталога "Debug\SIV-2023_LIB.tlog\".
+       InitializeBuildStatus:
+         Создание "Debug\SIV-2023_LIB.tlog\unsuccessfulbuild", так как было задано "AlwaysCreate".
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\bin\HostX86\x86\CL.exe /c /ZI /JMC /nologo /W3 /WX- /diagnostics:column /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /permissive- /Fo"Debug\\" /Fd"D:\KPO_3sem\SIV-2023\SIV-2023\Debug\SIV-2023_LIB.pdb" /external:W3 /Gd /TP /analyze- /FC /errorReport:prompt ..\SIV_lib.cpp
+         SIV_lib.cpp
+     1>D:\KPO_3sem\SIV-2023\SIV-2023\SIV_lib.cpp(8,13): warning C4244: return: преобразование "double" в "int", возможна потеря данных
+       Lib:
+         C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\bin\HostX86\x86\Lib.exe /OUT:"D:\KPO_3sem\SIV-2023\SIV-2023\Debug\SIV-2023_LIB.lib" /NOLOGO /MACHINE:X86 Debug\SIV_lib.obj
+         SIV-2023_LIB.vcxproj -> D:\KPO_3sem\SIV-2023\SIV-2023\Debug\SIV-2023_LIB.lib
+       FinalizeBuildStatus:
+         Файл "Debug\SIV-2023_LIB.tlog\unsuccessfulbuild" удаляется.
+         Обращение к "Debug\SIV-2023_LIB.tlog\SIV-2023_LIB.lastbuildstate".
+     1>Сборка проекта "D:\KPO_3sem\SIV-2023\SIV-2023\SIV-2023_LIB\SIV-2023_LIB.vcxproj" завершена (целевые объекты Build).
+
+Сборка успешно завершена.
+
+       "D:\KPO_3sem\SIV-2023\SIV-2023\SIV-2023_LIB\SIV-2023_LIB.vcxproj" (целевой объект Build ) (1) ->
+       (Целевой объект ClCompile) -> 
+         D:\KPO_3sem\SIV-2023\SIV-2023\SIV_lib.cpp(8,13): warning C4244: return: преобразование "double" в "int", возможна потеря данных
+
+    Предупреждений: 1
+    Ошибок: 0
+
+Прошло времени 00:00:00.64

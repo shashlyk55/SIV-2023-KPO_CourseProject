@@ -1,0 +1,394 @@
+Microsoft (R) Macro Assembler Version 14.33.31629.0	    12/19/23 19:03:02
+..\SIV_result.asm					     Page 1 - 1
+
+
+				.586
+				.model flat, stdcall
+				includelib libucrt.lib
+				includelib kernel32.lib
+
+				ExitProcess PROTO:DWORD 
+				SYSPAUSE PROTO 
+				soutl PROTO : BYTE 
+				noutl PROTO : SDWORD 
+				_pow PROTO  : SDWORD, : SDWORD 
+				_abs PROTO  : SDWORD 
+
+				.STACK 4096
+
+ 00000000			.CONST
+ 00000000 45 52 52 4F 52		null_division BYTE 'ERROR: DIVISION BY ZERO', 0
+	   3A 20 44 49 56
+	   49 53 49 4F 4E
+	   20 42 59 20 5A
+	   45 52 4F 00
+ 00000018 45 52 52 4F 52		OVER_FLOW BYTE 'ERROR: OVERFLOW', 0
+	   3A 20 4F 56 45
+	   52 46 4C 4F 57
+	   00
+ 00000028 74 72 75 65 00		true BYTE 'true', 0
+ 0000002D 66 61 6C 73 65		false BYTE 'false', 0
+	   00
+ 00000033 00				empty_string BYTE 0
+ 00000034 FFFFFFFF			short0 SDWORD -1
+ 00000038 00000000			short1 SDWORD 0
+ 0000003C 48 65 6C 6C 6F		str2 BYTE "Hello there!", 0
+	   20 74 68 65 72
+	   65 21 00
+ 00000049 C0 F0 E8 F4 EC		str3 BYTE "Арифм. операции:", 0
+	   2E 20 EE EF E5
+	   F0 E0 F6 E8 E8
+	   3A 00
+ 0000005A 00000002			short4 SDWORD 2
+ 0000005E 00000002			short5 SDWORD 2
+ 00000062 00000005			short6 SDWORD 5
+ 00000066 CA EE ED F2 F0		str7 BYTE "Контрольный пример выражения: ", 0
+	   EE EB FC ED FB
+	   E9 20 EF F0 E8
+	   EC E5 F0 20 E2
+	   FB F0 E0 E6 E5
+	   ED E8 FF 3A 20
+	   00
+ 00000085 00000005			short8 SDWORD 5
+ 00000089 0000000B			short9 SDWORD 11
+ 0000008D 00000002			short10 SDWORD 2
+ 00000091 000000B2			short11 SDWORD 178
+ 00000095 00000013			short12 SDWORD 19
+ 00000099 000000FF			short13 SDWORD 255
+ 0000009D 00000013			short14 SDWORD 19
+ 000000A1 46 46 48 20 2B		str15 BYTE "FFH + 23O = ", 0
+	   20 32 33 4F 20
+	   3D 20 00
+ 000000AE C2 FB E7 EE E2		str16 BYTE "Вызов функции:", 0
+	   20 F4 F3 ED EA
+	   F6 E8 E8 3A 00
+ 000000BD FFFFFFFC			short17 SDWORD -4
+ 000000C1 00000003			short18 SDWORD 3
+ 000000C5 D3 F1 EB EE E2		str19 BYTE "Условный оператор:", 0
+	   ED FB E9 20 EE
+	   EF E5 F0 E0 F2
+	   EE F0 3A 00
+ 000000D8 00000000			short20 SDWORD 0
+ 000000DC 70 6F 73 69 74		str21 BYTE "positive", 0
+	   69 76 65 00
+ 000000E5 00000001			short22 SDWORD 1
+ 000000E9 6E 65 67 61 74		str23 BYTE "negative", 0
+	   69 76 65 00
+ 000000F2 FFFFFFFF			short24 SDWORD -1
+ 00000000			.DATA
+ 00000000 00000000			res10 SDWORD 0
+ 00000004 00000033 R			str163 DWORD empty_string
+ 00000008 00000000			i63 SDWORD 0
+ 0000000C 00000000			asd63 SDWORD 0
+ 00000010 00000000			num63 SDWORD 0
+ 00000014 00000000			c63 SDWORD 0
+ 00000018 00000000			flag63 DWORD 0
+
+ 00000000			.CODE
+
+ 00000000			func1 PROC b1 : SDWORD, a1 : SDWORD
+ 00000003  FF 35 00000034 R		push short0
+ 00000009  58				pop eax
+ 0000000A  3D 00007FFF			cmp eax, 32767
+ 0000000F  0F 8F 0000028A		jg overflow
+ 00000015  3D FFFF8000			cmp eax, -32768
+ 0000001A  0F 8C 0000027F		jl overflow
+ 00000020  A3 00000000 R		mov res10, eax
+ 00000025  8B 45 0C			mov eax, a1
+ 00000028  3B 05 00000038 R		cmp eax, short1
+ 0000002E  7C 02			jl ifi1
+ 00000030  7D 27			jge else1
+ 00000032			ifi1:
+ 00000032  FF 75 0C			push a1
+ 00000035  E8 00000000 E		call _abs
+ 0000003A  50				push eax
+ 0000003B  58				pop eax
+ 0000003C  3D 00007FFF			cmp eax, 32767
+ 00000041  0F 8F 00000258		jg overflow
+ 00000047  3D FFFF8000			cmp eax, -32768
+ 0000004C  0F 8C 0000024D		jl overflow
+ 00000052  A3 00000000 R		mov res10, eax
+ 00000057  EB 28			jmp ifEnd1
+ 00000059			else1:
+ 00000059  FF 75 0C			push a1
+ 0000005C  FF 75 08			push b1
+ 0000005F  E8 00000000 E		call _pow
+ 00000064  50				push eax
+ 00000065  58				pop eax
+ 00000066  3D 00007FFF			cmp eax, 32767
+ 0000006B  0F 8F 0000022E		jg overflow
+ 00000071  3D FFFF8000			cmp eax, -32768
+ 00000076  0F 8C 00000223		jl overflow
+ 0000007C  A3 00000000 R		mov res10, eax
+ 00000081			ifEnd1:
+ 00000081  FF 35 00000000 R		push res10
+ 00000087  EB 00			jmp local0
+ 00000089			local0:
+ 00000089  58				pop eax
+					ret
+ 0000008E			func1 ENDP
+
+ 0000008E			setstring2 PROC s2 : DWORD
+ 00000091  FF 75 08			push s2
+ 00000094  EB 00			jmp local1
+ 00000096			local1:
+ 00000096  58				pop eax
+					ret
+ 0000009B			setstring2 ENDP
+
+ 0000009B			main PROC
+ 0000009B  68 0000003C R		push offset str2
+ 000000A0  E8 FFFFFFE9			call setstring2
+ 000000A5  50				push eax
+ 000000A6  8F 05 00000004 R		pop str163
+
+
+ 000000AC  FF 35 00000004 R	push str163
+ 000000B2  E8 00000000 E	call soutl
+
+ 000000B7  68 00000049 R	push offset str3
+ 000000BC  E8 00000000 E	call soutl
+ 000000C1  FF 35 0000005A R		push short4
+ 000000C7  FF 35 0000005E R		push short5
+ 000000CD  5B				pop ebx
+ 000000CE  58				pop eax
+ 000000CF  2B C3			sub eax, ebx
+ 000000D1  50				push eax
+ 000000D2  58				pop eax
+ 000000D3  3D 00007FFF			cmp eax, 32767
+ 000000D8  0F 8F 000001C1		jg overflow
+ 000000DE  3D FFFF8000			cmp eax, -32768
+ 000000E3  0F 8C 000001B6		jl overflow
+ 000000E9  A3 00000008 R		mov i63, eax
+ 000000EE  FF 35 00000062 R		push short6
+ 000000F4  FF 35 00000008 R		push i63
+ 000000FA  5B				pop ebx
+ 000000FB  58				pop eax
+ 000000FC  83 FB 00			cmp ebx,0
+ 000000FF  0F 84 0000018E		je SOMETHINGWRONG
+ 00000105  99				cdq
+ 00000106  F7 FB			idiv ebx
+ 00000108  50				push eax
+ 00000109  58				pop eax
+ 0000010A  3D 00007FFF			cmp eax, 32767
+ 0000010F  0F 8F 0000018A		jg overflow
+ 00000115  3D FFFF8000			cmp eax, -32768
+ 0000011A  0F 8C 0000017F		jl overflow
+ 00000120  A3 0000000C R		mov asd63, eax
+
+ 00000125  FF 35 00000008 R	push i63
+ 0000012B  E8 00000000 E	call noutl
+
+ 00000130  68 00000066 R	push offset str7
+ 00000135  E8 00000000 E	call soutl
+ 0000013A  FF 35 00000085 R		push short8
+ 00000140  FF 35 00000089 R		push short9
+ 00000146  FF 35 0000008D R		push short10
+ 0000014C  E8 00000000 E		call _pow
+ 00000151  50				push eax
+ 00000152  FF 35 00000091 R		push short11
+ 00000158  5B				pop ebx
+ 00000159  58				pop eax
+ 0000015A  2B C3			sub eax, ebx
+ 0000015C  50				push eax
+ 0000015D  58				pop eax
+ 0000015E  5B				pop ebx
+ 0000015F  F7 E3			mul ebx
+ 00000161  50				push eax
+ 00000162  FF 35 00000095 R		push short12
+ 00000168  58				pop eax
+ 00000169  5B				pop ebx
+ 0000016A  03 C3			add eax, ebx
+ 0000016C  50				push eax
+ 0000016D  58				pop eax
+ 0000016E  3D 00007FFF			cmp eax, 32767
+ 00000173  0F 8F 00000126		jg overflow
+ 00000179  3D FFFF8000			cmp eax, -32768
+ 0000017E  0F 8C 0000011B		jl overflow
+ 00000184  A3 00000008 R		mov i63, eax
+
+ 00000189  FF 35 00000008 R	push i63
+ 0000018F  E8 00000000 E	call noutl
+ 00000194  FF 35 00000099 R		push short13
+ 0000019A  FF 35 0000009D R		push short14
+ 000001A0  58				pop eax
+ 000001A1  5B				pop ebx
+ 000001A2  03 C3			add eax, ebx
+ 000001A4  50				push eax
+ 000001A5  58				pop eax
+ 000001A6  3D 00007FFF			cmp eax, 32767
+ 000001AB  0F 8F 000000EE		jg overflow
+ 000001B1  3D FFFF8000			cmp eax, -32768
+ 000001B6  0F 8C 000000E3		jl overflow
+ 000001BC  A3 00000008 R		mov i63, eax
+
+ 000001C1  68 000000A1 R	push offset str15
+ 000001C6  E8 00000000 E	call soutl
+
+ 000001CB  FF 35 00000008 R	push i63
+ 000001D1  E8 00000000 E	call noutl
+
+ 000001D6  68 000000AE R	push offset str16
+ 000001DB  E8 00000000 E	call soutl
+ 000001E0  FF 35 000000BD R		push short17
+ 000001E6  FF 35 000000C1 R		push short18
+ 000001EC  E8 FFFFFE0F			call func1
+ 000001F1  50				push eax
+ 000001F2  58				pop eax
+ 000001F3  3D 00007FFF			cmp eax, 32767
+ 000001F8  0F 8F 000000A1		jg overflow
+ 000001FE  3D FFFF8000			cmp eax, -32768
+ 00000203  0F 8C 00000096		jl overflow
+ 00000209  A3 00000010 R		mov num63, eax
+
+ 0000020E  FF 35 00000010 R	push num63
+ 00000214  E8 00000000 E	call noutl
+
+ 00000219  68 000000C5 R	push offset str19
+ 0000021E  E8 00000000 E	call soutl
+ 00000223  A1 00000008 R		mov eax, i63
+ 00000228  3B 05 000000D8 R		cmp eax, short20
+ 0000022E  7D 02			jge ifi2
+ 00000230  7C 26			jl else2
+ 00000232			ifi2:
+
+ 00000232  68 000000DC R	push offset str21
+ 00000237  E8 00000000 E	call soutl
+ 0000023C  FF 35 000000E5 R		push short22
+ 00000242  58				pop eax
+ 00000243  3D 00007FFF			cmp eax, 32767
+ 00000248  7F 55			jg overflow
+ 0000024A  3D FFFF8000			cmp eax, -32768
+ 0000024F  7C 4E			jl overflow
+ 00000251  A3 00000014 R		mov c63, eax
+ 00000256  EB 24			jmp ifEnd2
+ 00000258			else2:
+
+ 00000258  68 000000E9 R	push offset str23
+ 0000025D  E8 00000000 E	call soutl
+ 00000262  FF 35 000000F2 R		push short24
+ 00000268  58				pop eax
+ 00000269  3D 00007FFF			cmp eax, 32767
+ 0000026E  7F 2F			jg overflow
+ 00000270  3D FFFF8000			cmp eax, -32768
+ 00000275  7C 28			jl overflow
+ 00000277  A3 00000014 R		mov c63, eax
+ 0000027C			ifEnd2:
+
+ 0000027C  FF 35 00000014 R	push c63
+ 00000282  E8 00000000 E	call noutl
+ 00000287  E8 00000000 E		call SYSPAUSE
+ 0000028C  6A 00			push 0
+ 0000028E  E8 00000000 E		call ExitProcess
+ 00000293			SOMETHINGWRONG::
+ 00000293  68 00000000 R		push offset null_division
+ 00000298  E8 00000000 E		call soutl
+ 0000029D  EB 0A		jmp THEEND
+ 0000029F			overflow::
+ 0000029F  68 00000018 R		push offset OVER_FLOW
+ 000002A4  E8 00000000 E		call soutl
+ 000002A9			THEEND:
+ 000002A9  E8 00000000 E		call SYSPAUSE
+ 000002AE  6A FF			push -1
+ 000002B0  E8 00000000 E		call ExitProcess
+ 000002B5			main ENDP
+				end main
+Microsoft (R) Macro Assembler Version 14.33.31629.0	    12/19/23 19:03:02
+..\SIV_result.asm					     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CONST  . . . . . . . . . . . . .	32 Bit	 000000F6 Para	  Public  'CONST'	 ReadOnly
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000001C Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000002B5 Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+SYSPAUSE . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+_abs . . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+_pow . . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+func1  . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000008E Public STDCALL
+  b1 . . . . . . . . . . . . . .	DWord	 bp + 00000008
+  a1 . . . . . . . . . . . . . .	DWord	 bp + 0000000C
+  ifi1 . . . . . . . . . . . . .	L Near	 00000032 _TEXT	
+  else1  . . . . . . . . . . . .	L Near	 00000059 _TEXT	
+  ifEnd1 . . . . . . . . . . . .	L Near	 00000081 _TEXT	
+  local0 . . . . . . . . . . . .	L Near	 00000089 _TEXT	
+main . . . . . . . . . . . . . .	P Near	 0000009B _TEXT	Length= 0000021A Public STDCALL
+  ifi2 . . . . . . . . . . . . .	L Near	 00000232 _TEXT	
+  else2  . . . . . . . . . . . .	L Near	 00000258 _TEXT	
+  ifEnd2 . . . . . . . . . . . .	L Near	 0000027C _TEXT	
+  THEEND . . . . . . . . . . . .	L Near	 000002A9 _TEXT	
+noutl  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+setstring2 . . . . . . . . . . .	P Near	 0000008E _TEXT	Length= 0000000D Public STDCALL
+  s2 . . . . . . . . . . . . . .	DWord	 bp + 00000008
+  local1 . . . . . . . . . . . .	L Near	 00000096 _TEXT	
+soutl  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+OVER_FLOW  . . . . . . . . . . .	Byte	 00000018 CONST	
+SOMETHINGWRONG . . . . . . . . .	L Near	 00000293 _TEXT	
+asd63  . . . . . . . . . . . . .	DWord	 0000000C _DATA	
+c63  . . . . . . . . . . . . . .	DWord	 00000014 _DATA	
+empty_string . . . . . . . . . .	Byte	 00000033 CONST	
+false  . . . . . . . . . . . . .	Byte	 0000002D CONST	
+flag63 . . . . . . . . . . . . .	DWord	 00000018 _DATA	
+i63  . . . . . . . . . . . . . .	DWord	 00000008 _DATA	
+null_division  . . . . . . . . .	Byte	 00000000 CONST	
+num63  . . . . . . . . . . . . .	DWord	 00000010 _DATA	
+overflow . . . . . . . . . . . .	L Near	 0000029F _TEXT	
+res10  . . . . . . . . . . . . .	DWord	 00000000 _DATA	
+short0 . . . . . . . . . . . . .	DWord	 00000034 CONST	
+short10  . . . . . . . . . . . .	DWord	 0000008D CONST	
+short11  . . . . . . . . . . . .	DWord	 00000091 CONST	
+short12  . . . . . . . . . . . .	DWord	 00000095 CONST	
+short13  . . . . . . . . . . . .	DWord	 00000099 CONST	
+short14  . . . . . . . . . . . .	DWord	 0000009D CONST	
+short17  . . . . . . . . . . . .	DWord	 000000BD CONST	
+short18  . . . . . . . . . . . .	DWord	 000000C1 CONST	
+short1 . . . . . . . . . . . . .	DWord	 00000038 CONST	
+short20  . . . . . . . . . . . .	DWord	 000000D8 CONST	
+short22  . . . . . . . . . . . .	DWord	 000000E5 CONST	
+short24  . . . . . . . . . . . .	DWord	 000000F2 CONST	
+short4 . . . . . . . . . . . . .	DWord	 0000005A CONST	
+short5 . . . . . . . . . . . . .	DWord	 0000005E CONST	
+short6 . . . . . . . . . . . . .	DWord	 00000062 CONST	
+short8 . . . . . . . . . . . . .	DWord	 00000085 CONST	
+short9 . . . . . . . . . . . . .	DWord	 00000089 CONST	
+str15  . . . . . . . . . . . . .	Byte	 000000A1 CONST	
+str163 . . . . . . . . . . . . .	DWord	 00000004 _DATA	
+str16  . . . . . . . . . . . . .	Byte	 000000AE CONST	
+str19  . . . . . . . . . . . . .	Byte	 000000C5 CONST	
+str21  . . . . . . . . . . . . .	Byte	 000000DC CONST	
+str23  . . . . . . . . . . . . .	Byte	 000000E9 CONST	
+str2 . . . . . . . . . . . . . .	Byte	 0000003C CONST	
+str3 . . . . . . . . . . . . . .	Byte	 00000049 CONST	
+str7 . . . . . . . . . . . . . .	Byte	 00000066 CONST	
+true . . . . . . . . . . . . . .	Byte	 00000028 CONST	
+
+	   0 Warnings
+	   0 Errors

@@ -1,0 +1,18 @@
+-------------- Протокол ----------------
+Дата: 17.12.2023 03:37:30
+------------- Параметры ----------------
+-in: D:\KPO_3sem\SIV-2023\SIV-2023\SemErrors.txt
+-log: D:\KPO_3sem\SIV-2023\SIV-2023\SemErrors.txt.log
+-out: D:\KPO_3sem\SIV-2023\SIV-2023\SIV_result.asm
+-an: D:\KPO_3sem\SIV-2023\SIV-2023\SemErrors.txt.an.txt
+---------- Исходные данные -------------
+Количество символов: 762
+Проигнорировано:     0
+Количество строк:    61
+----------------------------------------
+No forbidden characters
+Tokenization :  Completed successfully
+Lexical analysis :  Completed successfully
+Syntax analysis :  Completed successfully
+Semantic analysis : - ERROR
+Ошибка 146: Ошибка семантического анализа: Оператор не предназначен для работы со строками, строка 21, позиция 1
